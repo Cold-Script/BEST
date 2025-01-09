@@ -1,1 +1,38 @@
+if not game:GetService("CoreGui"):FindFirstChild("FluxLib") then
+return
+end
+local Flux = loadstring(game:HttpGet"https://github.com/Cold-Script/Flux/blob/main/Flux Lib Source?raw=true")()
+local Window = Flux:Window("YOUHUB", "DOORS | CONTENT UPD", Color3.fromRGB(0, 200, 255), Enum.KeyCode.LeftControl)
+local Tabs = {
+Main = Window:Tab("Main", "http://www.roblox.com/asset/?id=6023426915"),
+Entities = Window:Tab("Entities", "http://www.roblox.com/asset/?id=6023426915"),
+Players = Window:Tab("Players", "http://www.roblox.com/asset/?id=6023426915"),
+Visual = Window:Tab("Visual", "http://www.roblox.com/asset/?id=6023426915"),
+Floor = Window:Tab("Floor", "http://www.roblox.com/asset/?id=6023426915")
+}
+local RemotesFolder = _G.Floor
+if _G.Floor == "Hotel-" and game:GetService("ReplicatedStorage").GameData.Floor.Value == "Hotel" then
+task.wait(0.1)
+_G.Floor = game:GetService("ReplicatedStorage").Bricks
+end
+if _G.Floor == "Hotel" and game:GetService("ReplicatedStorage").GameData.Floor.Value == "Hotel" then
+task.wait(0.1)
+_G.Floor = game:GetService("ReplicatedStorage").RemotesFolder
+end
+if _G.Floor == "Backdoors" and game:GetService("ReplicatedStorage").GameData.Floor.Value == "Backdoors" then
+task.wait(0.1)
+_G.Floor = game:GetService("ReplicatedStorage").RemotesFolder
+end
+if _G.Floor == "Mines" and game:GetService("ReplicatedStorage").GameData.Floor.Value == "Mines" then
+task.wait(0.1)
+_G.Floor = game:GetService("ReplicatedStorage").RemotesFolder
+end
+if _G.Floor == "Retro" and game:GetService("ReplicatedStorage").GameData.Floor.Value == "Retro" then
+task.wait(0.1)
+_G.Floor = game:GetService("ReplicatedStorage").RemotesFolder
+end
+if _G.Floor == "SuperHardMode" and game:GetService("ReplicatedStorage").GameData.Floor.Value == "Hotel" then
+task.wait(0.1)
+_G.Floor = game:GetService("ReplicatedStorage").EntityInfo
+end
 
