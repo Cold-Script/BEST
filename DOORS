@@ -1,14 +1,11 @@
-if not game:GetService("CoreGui"):FindFirstChild("FluxLib") then
-return
-end
 local Flux = loadstring(game:HttpGet"https://github.com/Cold-Script/Flux/blob/main/Flux Lib Source?raw=true")()
 local Window = Flux:Window("YOUHUB", "DOORS | CONTENT UPD", Color3.fromRGB(0, 200, 255), Enum.KeyCode.LeftControl)
 local Tabs = {
-Main = Window:Tab("Main", "http://www.roblox.com/asset/?id=6023426915"),
-Entities = Window:Tab("Entities", "http://www.roblox.com/asset/?id=6023426915"),
-Players = Window:Tab("Players", "http://www.roblox.com/asset/?id=6023426915"),
-Visual = Window:Tab("Visual", "http://www.roblox.com/asset/?id=6023426915"),
-Floor = Window:Tab("Floor", "http://www.roblox.com/asset/?id=6023426915")
+Main = Window:Tab("| Main", "http://www.roblox.com/asset/?id=6023426915"),
+Entities = Window:Tab("| Entities","http://www.roblox.com/asset/?id=6023426915"),
+Players = Window:Tab("| Players", "http://www.roblox.com/asset/?id=6023426915"),
+Visual = Window:Tab("| Visual", "http://www.roblox.com/asset/?id=6023426915"),
+Floor = Window:Tab("| Floor", "http://www.roblox.com/asset/?id=6023426915")
 }
 local RemotesFolder = _G.Floor
 if _G.Floor == "Hotel-" and game:GetService("ReplicatedStorage").GameData.Floor.Value == "Hotel" then
@@ -31,8 +28,54 @@ if _G.Floor == "Retro" and game:GetService("ReplicatedStorage").GameData.Floor.V
 task.wait(0.1)
 _G.Floor = game:GetService("ReplicatedStorage").RemotesFolder
 end
-if _G.Floor == "SuperHardMode" and game:GetService("ReplicatedStorage").GameData.Floor.Value == "Hotel" then
+if _G.Floor == "SuperHardMode" and game:GetService("ReplicatedStorage").GameData.Floor.Value == "Fools" then
 task.wait(0.1)
 _G.Floor = game:GetService("ReplicatedStorage").EntityInfo
 end
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local GameData = ReplicatedStorage:WaitForChild("GameData")
+local Floor = GameData:WaitForChild("Floor")
+
+local Mines = Floor.Value == "Mines"
+local Rooms = Floor.Value == "Rooms"
+local Hotel = Floor.Value == "Hotel"
+local Backdoor = Floor.Value == "Backdoor"
+local Fools = Floor.Value == "Fools"
+
+Tabs.Main:Label("--Misc--")
+if Fools then
+Tabs.Main:Toggle("Auto Revive","Revive on death",function(v)
+_G.AutoRevive = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid").Health == 0 and _G.AutoRevive then
+RemotesFolder.Revive:FireServer()
+end
+end)
+end)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
