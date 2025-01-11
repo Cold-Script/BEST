@@ -22,9 +22,8 @@ local RemotesFolder = ReplicatedStorage.EntityInfo
 else
 local RemotesFolder = ReplicatedStorage.RemotesFolder
 end
-
-Tabs.Main:Label("--Misc--")
 if Fools then
+Tabs.Main:Label("--Misc--")
 Tabs.Main:Toggle("Auto Revive","Revive on death",function(v)
 _G.AutoRevive = v
 game:GetService("RunService").RenderStepped:Connect(function()
@@ -33,7 +32,7 @@ RemotesFolder.Revive:FireServer()
 end
 end)
 end)
-
+end
 
 
 
