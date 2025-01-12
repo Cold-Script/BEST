@@ -12,10 +12,10 @@ local GameData = ReplicatedStorage:WaitForChild("GameData")
 local Floor = GameData:WaitForChild("Floor")
 
 --ESP
-local ESP_Closets = {Wardrobe={"Wardrobe",3},Backdoor_Wardrobe={"Wardrobe",3},RetroWardrobe={"Wardrobe",3},Toolshed={"Toolshed",7},Rooms_Locker={"Locker",3},Rooms_Frigde_Locker={"Locker",3},Locker_Large={"Locker",3},Bed={"Bed",3},Double_Bed={"Bed",3}}
+local ESP_Chest = {ChestBox={"Chest",3},ChestBoxLocked={"Chest [Locked]",3},Toolbox={"Box",3},Chest_Vine={"Chest",7}}
 local ESP_Items = {StarJug={"StarJug",1.5},StarBottle={"StarBottle",1.5},StarVial={"StarVial",1.5},GweenSoda={"Gween Soda",1.5},Bread={"Bread",1.5},Cheese={"Cheese",1.5},BandagePack={"BandagePack",1.5},BatteryPack={"Battery Pack",1.5},LaserPointer={"LaserPointer",1.5},Glowstick={"Glowstick",1.5},Smoothie={"Smoothie",1.5},Straplight={"Straplight",1.5},Bulklight={"Bulklight",1.5},KeyObtain={"Key",1.5},LiveHintBook={"Book",1.5},Lighter={"Lighter",1.5},Lockpick={"Lockpicks",1.5},Vitamins={"Vitamins",1.5},Crucifix={"Crucifix",1.5},CrucifixWall={"Crucifix",1.5},SkeletonKey={"Skeleton Key",1.5},Flashlight={"Flashlight",1.5},Candle={"Candle",1.5},FuseObtain={"Fuse",1.5},LiveBreakerPolePickup={"Fuse",1.5},Shears={"Shears",1.5},Battery={"Battery",1.5},PickupItem={"Paper",1.5},ElectricalKeyObtain={"Electrical Key",1.5},Shakelight={"Shakelight",1.5},Scanner={"iPad",1.5}}
 local ESP_Entities = {SeekNewCloneMoving={"Seek",7},Grumbo={"Grumble",7},GiggleCeiling={"Giggle",7},Sally={"Sally",7},BackdoorLookman={"Lookman",7},BackdoorRush={"Blitz",7},RushMoving={"Rush",5},AmbushMoving={"Ambush",5},FigureRig={"Figure",7},FigureRagdoll={"Figure",7},FigureLibrary={"Figure",7},SeekMoving={"Seek",5.5},Screech={"Screech",2},Eyes={"Eyes",4},Snare={"Snare",2},A60={"A-60",10},A120={"A-120",10}}
-local ESP_Other = {TimerLever={"Timer Lever",7},WaterPump={"WaterPump",7},MinesAnchor={"Anchor",7},MinesGateButton={"Gate Button",7},MinesGenerator={"Generator",7},Door={"Door",5},LeverForGate={"Lever",3},GoldPile={"Gold",0.5},Bandage={"Bandage",0.5}}
+local ESP_Other = {Rooms_Locker={"Locker",3},Rooms_Frigde_Locker={"Locker",3},Locker_Large={"Locker",3},TimerLever={"Timer Lever",7},WaterPump={"WaterPump",7},MinesAnchor={"Anchor",7},MinesGateButton={"Gate Button",7},MinesGenerator={"Generator",7},Door={"Door",5},LeverForGate={"Lever",3},GoldPile={"Gold",0.5},Bandage={"Bandage",0.5}}
 for _,Player in pairs(game:GetService("Players"):GetPlayers()) do
 if Player ~= game:GetService("Players").LocalPlayer then
 ESP_Other[Player.Name] = {Player.DisplayName,4}
@@ -27,7 +27,7 @@ if (ESP_Closets[Object.Name] or ESP_Items[Object.Name] or ESP_Entities[Object.Na
 if Object:FindFirstChild("RushNew") then
 if not Object.RushNew:WaitForChild("PlaySound").Playing then return end
 end
-local Color = ESP_Closets[Object.Name] and Color3.fromRGB(0, 125, 255) or ESP_Items[Object.Name] and Color3.new(1,1) or ESP_Entities[Object.Name] and Color3.new(1) or ESP_Other[Object.Name] and Color3.new(0,1,1)
+local Color = ESP_Chest[Object.Name] and Color3.fromRGB(255, 0, 255) or ESP_Items[Object.Name] and Color3.new(1,1) or ESP_Entities[Object.Name] and Color3.new(1) or ESP_Other[Object.Name] and Color3.new(0,1,1)
 if Object.Name == "RushMoving" or Object.Name == "AmbushMoving" or Object.Name == "Eyes" or Object.Name == "A60" or Object.Name == "A120" or Object.Name == "BackdoorRush" or Object.Name == "BackdoorLookman" then
 for i = 1, 100 do
 if Object:FindFirstChildOfClass("Part") then
@@ -45,7 +45,7 @@ local function ApplyHighlight(IsValid,Bool)
                     if Bool then
                         TXT = IsValid[1]
                         local UI = Instance.new("BillboardGui",Object)
-                        UI.Size = UDim2.new(0,1000,0,50)
+                        UI.Size = UDim2.new(0,1000,0,30)
                         UI.AlwaysOnTop = true
                         UI.StudsOffset = Vector3.new(0,IsValid[2],0)
                         local Label = Instance.new("TextLabel",UI)
@@ -68,13 +68,13 @@ local function ApplyHighlight(IsValid,Bool)
                         local Highlight = Instance.new("Highlight",Target)
                         Highlight.FillColor = Color
                         Highlight.OutlineColor = Color
-                        Highlight.FillTransparency = 1
+                        Highlight.FillTransparency = _G.FillColor
                     elseif Target:FindFirstChild("Highlight") then
                         Target.Highlight:Destroy()
                     end
                 end
             end
-            ApplyHighlight(ESP_Closets[Object.Name],_G.ClosetsESP)
+            ApplyHighlight(ESP_Chest[Object.Name],_G.ChestESP)
             ApplyHighlight(ESP_Items[Object.Name],_G.ItemESP)
             ApplyHighlight(ESP_Entities[Object.Name],_G.EntityESP)
             ApplyHighlight(ESP_Other[Object.Name],_G.OtherESP)
@@ -83,10 +83,10 @@ local function ApplyHighlight(IsValid,Bool)
 end
 workspace.DescendantAdded:Connect(ApplySettings)
 --Script
-Tabs.Visual:Toggle("Closets ESP","Highlights all closets.",false,function(Bool)
-    _G.ClosetsESP = Bool
+Tabs.Visual:Toggle("Chest ESP","Highlights all closets.",false,function(Bool)
+    _G.ChestESP = Bool
     for _,Object in pairs(workspace:GetDescendants()) do
-        if ESP_Closets[Object.Name] then
+        if ESP_Chest[Object.Name] then
             ApplySettings(Object)
         end
     end
@@ -114,4 +114,13 @@ Tabs.Visual:Toggle("Other ESP","Highlights all hostile entities.",false,function
             ApplySettings(Object)
         end
     end
+end)
+Tabs.Visual:Line()
+Tabs.Visual:Toggle("Invisicble Exile","Highlights Fill Delete",false,function(Bool)
+_G.DeleteFillColor = v
+if _G.DeleteFillColor == true then
+_G.FillColor = 1
+else
+_G.FillColor = 0
+end
 end)
