@@ -11,50 +11,97 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local GameData = ReplicatedStorage:WaitForChild("GameData")
 local Floor = GameData:WaitForChild("Floor")
 
-local Mines = Floor.Value == "Mines"
-local Rooms = Floor.Value == "Rooms"
-local Hotel = Floor.Value == "Hotel"
-local Backdoor = Floor.Value == "Backdoor"
-local Fools = Floor.Value == "Fools"
-
-if Fools then
-local RemotesFolder = ReplicatedStorage.EntityInfo
-else
-local RemotesFolder = ReplicatedStorage.RemotesFolder
+--ESP
+local ESP_Items = {StarlightJug={"Starlight Jug",1.5},StarlightBottle={"Starlight Bottle",1.5},StarlightVial={"Starlight Vial",1.5},GweenSoda={"Gween Soda",1.5},Bread={"Bread",1.5},Cheese={"Cheese",1.5},BandagePack={"BandagePack",1.5},BatteryPack={"Battery Pack",1.5},LaserPointer={"LaserPointer",1.5},Glowstick={"Glowstick",1.5},Smoothie={"Smoothie",1.5},Straplight={"Straplight",1.5},Bulklight={"Bulklight",1.5},KeyObtain={"Key",1.5},LiveHintBook={"Book",1.5},Lighter={"Lighter",1.5},Lockpick={"Lockpicks",1.5},Vitamins={"Vitamins",1.5},Crucifix={"Crucifix",1.5},CrucifixWall={"Crucifix",1.5},SkeletonKey={"Skeleton Key",1.5},Flashlight={"Flashlight",1.5},Candle={"Candle",1.5},FuseObtain={"Fuse",1.5},LiveBreakerPolePickup={"Fuse",1.5},Shears={"Shears",1.5},Battery={"Battery",1.5},PickupItem={"Paper",1.5},ElectricalKeyObtain={"Electrical Key",1.5},Shakelight={"Shakelight",1.5},Scanner={"iPad",1.5}}
+local ESP_Entities = {SeekNewCloneMoving={"Seek",7},Grumbo={"Grumble",7},GiggleCeiling={"Giggle",7},Sally={"Sally",7},BackdoorLookman={"Lookman",7},BackdoorRush={"Blitz",7},RushMoving={"Rush",5},AmbushMoving={"Ambush",5},FigureRig={"Figure",7},FigureRagdoll={"Figure",7},FigureLibrary={"Figure",7},SeekMoving={"Seek",5.5},Screech={"Screech",2},Eyes={"Eyes",4},Snare={"Snare",2},A60={"A-60",10},A120={"A-120",10}}
+local ESP_Other = {Toolshed={"Toolshed",7},TimerLever={"Timer Lever",7},WaterPump={"WaterPump",7},MinesAnchor={"Anchor",7},MinesGateButton={"Gate Button",7},MinesGenerator={"Generator",7},Door={"Door",5},LeverForGate={"Lever",3},GoldPile={"Gold",0.5},Bandage={"Bandage",0.5}}
+for _,Player in pairs(game:GetService("Players"):GetPlayers()) do
+if Player ~= game:GetService("Players").LocalPlayer then
+ESP_Other[Player.Name] = {Player.DisplayName,4}
 end
-if Fools then
-Tabs.Main:Label("--Misc--")
-Tabs.Main:Toggle("Auto Revive","Revive on death",function(v)
-_G.AutoRevive = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid").Health == 0 and _G.AutoRevive then
-RemotesFolder.Revive:FireServer()
 end
+local function ApplySettings(Object)
+task.spawn(function()
+if (ESP_Items[Object.Name] or ESP_Entities[Object.Name] or ESP_Other[Object.Name]) and Object.ClassName == "Model" then
+if Object:FindFirstChild("RushNew") then
+if not Object.RushNew:WaitForChild("PlaySound").Playing then return end
+end
+local Color = ESP_Items[Object.Name] and Color3.new(1,1) or ESP_Entities[Object.Name] and Color3.new(1) or ESP_Other[Object.Name] and Color3.new(0,1,1)
+if Object.Name == "RushMoving" or Object.Name == "AmbushMoving" or Object.Name == "Eyes" or Object.Name == "A60" or Object.Name == "A120" or Object.Name == "BackdoorRush" or Object.Name == "BackdoorLookman" then
+for i = 1, 100 do
+if Object:FindFirstChildOfClass("Part") then
+break
+end
+if i == 100 then
+return
+end
+end
+Object:FindFirstChildOfClass("Part").Transparency = 0.99
+Instance.new("Humanoid",Object)
+end
+local function ApplyHighlight(IsValid,Bool)
+                if IsValid then
+                    if Bool then
+                        TXT = IsValid[1]
+                        local UI = Instance.new("BillboardGui",Object)
+                        UI.Size = UDim2.new(0,1000,0,30)
+                        UI.AlwaysOnTop = true
+                        UI.StudsOffset = Vector3.new(0,IsValid[2],0)
+                        local Label = Instance.new("TextLabel",UI)
+                        Label.Size = UDim2.new(1,0,1,0)
+                        Label.BackgroundTransparency = 1
+                        Label.TextScaled = true
+                        Label.Text = TXT
+                        Label.TextColor3 = Color
+                        Label.FontFace = Font.new("rbxasset://fonts/families/Oswald.json")
+                        Label.TextStrokeTransparency = 0
+                        Label.TextStrokeColor3 = Color3.new(Color.R/2,Color.G/2,Color.B/2)
+                    elseif Object:FindFirstChild("BillboardGui") then
+                        Object.BillboardGui:Destroy()
+                    end
+                    local Target = Object
+                    if IsValid[1] == "Door" and Object.Parent.Name ~= "49" and Object.Parent.Name ~= "50" then
+                        Target = Object:WaitForChild("Door")
+                    end
+                    if Bool then
+                        local Highlight = Instance.new("Highlight",Target)
+                        Highlight.FillColor = Color
+                        Highlight.OutlineColor = Color
+                        Highlight.FillTransparency = 1
+                    elseif Target:FindFirstChild("Highlight") then
+                        Target.Highlight:Destroy()
+                    end
+                end
+            end
+            ApplyHighlight(ESP_Items[Object.Name],_G.ItemESP)
+            ApplyHighlight(ESP_Entities[Object.Name],_G.EntityESP)
+            ApplyHighlight(ESP_Other[Object.Name],_G.OtherESP)
+        end
+    end)
+end
+workspace.DescendantAdded:Connect(ApplySettings)
+--Script
+Tabs.Visual:Toggle("Entity ESP","Highlights all hostile entities.",false,function(Bool)
+    _G.EntityESP = Bool
+    for _,Object in pairs(workspace:GetDescendants()) do
+        if ESP_Entities[Object.Name] then
+            ApplySettings(Object)
+        end
+    end
 end)
+Tabs.Visual:Toggle("Item ESP","Highlights items like Keys, Books, and Crucifixes through walls.",false,function(Bool)
+    _G.ItemESP = Bool
+    for _,Object in pairs(workspace:GetDescendants()) do
+        if ESP_Items[Object.Name] then
+            ApplySettings(Object)
+        end
+    end
 end)
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Tabs.Visual:Toggle("Other ESP","Highlights all hostile entities.",false,function(Bool)
+    _G.OtherESP = Bool
+    for _,Object in pairs(workspace:GetDescendants()) do
+        if ESP_Other[Object.Name] then
+            ApplySettings(Object)
+        end
+    end
+end)
