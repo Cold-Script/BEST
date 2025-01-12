@@ -45,7 +45,7 @@ local function ApplyHighlight(IsValid,Bool)
                     if Bool then
                         TXT = IsValid[1]
                         local UI = Instance.new("BillboardGui",Object)
-                        UI.Size = UDim2.new(0,1000,0,0)
+                        UI.Size = UDim2.new(0,1000,0,50)
                         UI.AlwaysOnTop = true
                         UI.StudsOffset = Vector3.new(0,IsValid[2],0)
                         local Label = Instance.new("TextLabel",UI)
