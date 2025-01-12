@@ -3,6 +3,8 @@ local Window = Flux:Window("YOUHUB", "DOORS | CONTENT UPD", Color3.fromRGB(0, 20
 local Tabs = {
 Main = Window:Tab("| Main", "http://www.roblox.com/asset/?id=6023426915"),
 Entities = Window:Tab("| Entities","http://www.roblox.com/asset/?id=6023426915"),
+Misc = Window:Tab("| Misc","http://www.roblox.com/asset/?id=6023426915"),
+VFX = Window:Tab("| VFX","http://www.roblox.com/asset/?id=6023426915"),
 Players = Window:Tab("| Players", "http://www.roblox.com/asset/?id=6023426915"),
 Visual = Window:Tab("| Visual", "http://www.roblox.com/asset/?id=6023426915"),
 Floor = Window:Tab("| Floor", "http://www.roblox.com/asset/?id=6023426915")
@@ -161,13 +163,8 @@ Tabs.Main:Dropdown("Max Reach", {"15","20","25","30"}, function(v)
 _G.MaxReach = v
 end)
 Tabs.Main:Line()
-Tabs.Main:Toggle("Automation Breaker", "Auto Breaker Minigame in 100", false, function(v)
-_G.AutoBreaker = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.AutoBreaker then
+Tabs.Main:Button("Auto Breaker","Auto Minigame Breaker",function()
 RemotesFolder.EBF:FireServer()
-end
-end)
 end)
 Tabs.Main:Button("Auto Padlock Unlock","Auto Library Code",function()
 local Paper = workspace:FindFirstChild("LibraryHintPaper",true) or workspace:FindFirstChild("LibraryHintPaperHard",true) or Players:FindFirstChild("LibraryHintPaper",true) or Players:FindFirstChild("LibraryHintPaperHard",true)
