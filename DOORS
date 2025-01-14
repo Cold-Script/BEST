@@ -459,6 +459,162 @@ RemotesFolder.Revive:FireServer()
 end
 end)
 
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AntiSnare then
+if game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):FindFirstChild("Snare") then
+for _,v in pairs(game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):GetChildren()) do 
+if v.Name == "Snare" then 
+v.Hitbox.CanTouch = not _G.AntiSnare
+end 
+end 
+end 
+end 
+end)
+Tabs.Entities:Toggle("Anti-Snare","No damage snare.",false,function(v)
+_G.AntiSnare = v
+end)
+Tabs.Entities:Toggle("Anti-Dupe","Auto lock door dupe.",false,function(v)
+_G.AntiDupe = v
+if _G.AntiDupe then
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "DoorFake" and v:IsA("Model") then
+v.Hidden.CanTouch = not _G.AntiDupe
+if v:FindFirstChild("LockPart") and v.LockPart:FindFirstChild("UnlockPrompt") then
+v.LockPart.UnlockPrompt.Enabled = not true
+end
+end
+end
+AntiDupe = workspace.CurrentRooms.ChildAdded:Connect(function()
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "DoorFake" and v:IsA("Model") then
+v.Hidden.CanTouch = not _G.AntiDupe
+if v:FindFirstChild("LockPart") and v.LockPart:FindFirstChild("UnlockPrompt") then
+v.LockPart.UnlockPrompt.Enabled = not true
+end
+end
+end
+end)
+else
+AntiDupe:Disconnect()
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "DoorFake" and v:IsA("Model") then
+v.Hidden.CanTouch = not false
+if v:FindFirstChild("LockPart") and v.LockPart:FindFirstChild("UnlockPrompt") then
+v.LockPart.UnlockPrompt.Enabled = not false
+end
+end
+end
+end
+end)
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AntiChandelier then 
+if game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):FindFirstChild("ChandelierObstruction") then 
+for _,v in pairs(game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):GetChildren()) do 
+if v.Name == "ChandelierObstruction" then 
+v.HurtPart.CanTouch = not _G.AntiChandelier
+end 
+end 
+end 
+end 
+end)
+Tabs.Entities:Toggle("Anti-Chandelier","No damage flame chandelier.",false,function(v)
+_G.AntiChandelier = v
+end)
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AntiSeekArms then
+if game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):FindFirstChild("Seek_Arm") then
+for _,v in pairs(game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):GetChildren()) do 
+if v.Name == "Seek_Arm" then 
+v.AnimatorPart.CanTouch = not _G.AntiSeekArms
+end 
+end 
+end 
+end 
+end)
+Tabs.Entities:Toggle("Anti-Seek Arms","No damage entity seek arm.",false,function(v)
+_G.AntiSeekArms = v
+end)
+game:GetService("RunService").RenderStepped:Connect(function()
+if not (game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and game.Players.LocalPlayer.Character:FindFirstChild("Collision")) then return end
+if workspace:FindFirstChild("Eyes") and _G.AntiEyes then
+for _, v in workspace:GetChildren() do
+if v.Name == "Eyes" and v:FindFirstChild("Core") and v.Core:FindFirstChild("Ambience") and v.Core.Ambience.Playing then
+RemotesFolder.MotorReplication:FireServer(-650)
+break
+end
+end
+end
+if workspace:FindFirstChild("BackdoorLookman") and _G.AntiLookman then
+for _, v in workspace:GetChildren() do
+if v.Name == "BackdoorLookman" and v:FindFirstChild("Core") and v.Core:FindFirstChild("Ambience") and v.Core.Ambience.Playing then
+RemotesFolder.MotorReplication:FireServer(-650)
+break
+end
+end
+end
+end)
+if Backdoors then
+Tabs.Entities:Toggle("Anti-Lookman","Look lookman but no damge.",false,function(v)
+_G.AntiLookman = v
+end)
+else
+Tabs.Entities:Toggle("Anti-Eyes","Look eyes but no damge.",false,function(v)
+_G.AntiEyes = v
+end)
+end
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()
+if _G.AntiGiggle then
+for _, room in pairs(game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:GetChildren()) do
+if room.Name == "GiggleCeiling" then
+room.Hitbox.CanTouch = not _G.AntiGiggle
+end
+end
+end
+end)
+end)
+Tabs.Entities:Toggle("Anti-Giggle","Giggle cant touch you.",false,function(v)
+for _, room in pairs(game.workspace.CurrentRooms:GetChildren()) do
+if room.Name == "GiggleCeiling" then
+room.Hitbox.CanTouch = not _G.AntiGiggle
+end
+end
+_G.AntiGiggle = v
+end)
+Tabs.Entities:Toggle("Anti-Screech","Screech no damge.",false,function(v)
+_G.AntiScreech = v
+if _G.AntiScreech then
+RemotesFolder.Screech.Name = "_Screech"
+else
+RemotesFolder._Screech.Name = "Screech"
+end
+end)
+Tabs.Entities:Toggle("Anti-A90","No A90.",false,function(v)
+if v then
+RemotesFolder.A90.Name = "_A90"
+game.Players.LocalPlayer.PlayerGui:WaitForChild("MainUI"):WaitForChild("Jumpscare"):FindFirstChild("Jumpscare_A90").Parent = nil
+else
+RemotesFolder._A90.Name = "A90"
+game.Players.LocalPlayer.PlayerGui:WaitForChild("MainUI"):WaitForChild("Jumpscare"):FindFirstChild("Jumpscare_A90").Parent = game.Players.LocalPlayers.PlayerGui.MainUI.Jumpscare
+end
+end)
+Tabs.Entities:Toggle("Anti-Halt","No Halt",false,function(v)
+_G.AntiHalt = v
+while _G.AntiHalt do wait(0.1)
+game:GetService("ReplicatedStorage").ClientModules.EntityModules.Shade.Parent = game.Workspace
+end
+end)
+Tabs.Entities:Toggle("Anti-Dread","No dread damage.",false,function(v)
+_G.AntiDread = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AntiDread then
+RemotesFolder.Dread:FireServer(false)
+else
+RemotesFolder.Dread:FireServer(true)
+end
+end)
+end)
+
 Tabs.Visual:Toggle("Chest ESP","Highlights all chest.",false,function(Bool)
     _G.ChestESP = Bool
     for _,Object in pairs(workspace:GetDescendants()) do
