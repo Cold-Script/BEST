@@ -15,7 +15,6 @@ Misc = Window:Tab("| Misc","http://www.roblox.com/asset/?id=6023426915"),
 Entities = Window:Tab("| Entities","http://www.roblox.com/asset/?id=6023426915"),
 Players = Window:Tab("| Players", "http://www.roblox.com/asset/?id=6023426915"),
 Visual = Window:Tab("| Visual", "http://www.roblox.com/asset/?id=6023426915"),
-Floor = Window:Tab("| Floor", "http://www.roblox.com/asset/?id=6023426915")
 }
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local GameData = ReplicatedStorage:WaitForChild("GameData")
@@ -81,8 +80,10 @@ local function ApplyHighlight(IsValid,Bool)
                         Object.BillboardGui:Destroy()
                     end
                     local Target = Object
+                    if not Mines then
                     if IsValid[1] == "Door" and Object.Parent.Name ~= "49" and Object.Parent.Name ~= "50" then
                         Target = Object:WaitForChild("Door")
+                    end
                     end
                     if Bool and not Object:FindFirstChild("Highlight") then
                         local Highlight = Instance.new("Highlight",Target)
@@ -103,6 +104,7 @@ local function ApplyHighlight(IsValid,Bool)
     end)
 end
 workspace.DescendantAdded:Connect(ApplySettings)
+workspace.CurrentRooms.DescendantAdded:Connect(ApplySettings)
 --Script
 game:GetService("RunService").RenderStepped:Connect(function()
 pcall(function()
@@ -682,6 +684,269 @@ AntiDrakobloxxer:Disconnect()
 end
 end)
 end
+Tabs.Players:Dropdown("Speed", {"20","25","30","35","40","45","50"}, function(v)
+_G.SpeedBoost = v
+end)
+Tabs.Players:Toggle("SpeedBoost","Enabled speed you select.",false,function(v)
+_G.EnabledSpeed = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.EnabledSpeed and not _G.SeekSpeed then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.SpeedBoost or 17
+end
+end)
+end)
+Tabs.Players:Line()
+Tabs.Players:Toggle("Instance Interact","No Hold.",false,function(v)
+_G.InstanceInteract = v
+if _G.InstanceInteract then
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.HoldDuration = 0
+end
+end
+InstanceInteract = workspace.CurrentRooms.ChildAdded:Connect(function(v)
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.HoldDuration = 0
+end
+end
+end)
+else
+InstanceInteract:Disconnect()
+end
+end)
+Tabs.Players:Toggle("Auto Eat Candy","Eat Candy.",false,function(v)
+_G.EatCandy = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if game.Players.LocalPlayer.Character:FindFirstChild("Candy",true) and _G.EatCandy then
+if not game.Players.LocalPlayer.Character:FindFirstChild("Meshes/DOORS_EvilCandy_Cube", true) then
+game.Players.LocalPlayer.Character.Candy.Remote:FireServer()
+end
+end
+end)
+end)
+Tabs.Players:Toggle("No Wet Floor","No Wet Floor.",false,function(v)
+_G.NoSlow = v
+game:GetService("RunService").RenderStepped:Connect(function()
+game.Players.LocalPlayer.Character.Head.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.LeftFoot.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.LeftHand.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.LeftLowerArm.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.LeftLowerLeg.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.LeftUpperArm.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.LeftUpperLeg.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.LowerTorso.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.RightFoot.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.RightFoot.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.RightHand.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.RightLowerArm.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.RightLowerLeg.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.RightUpperArm.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.RightUpperLeg.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.UpperTorso.Massless = not _G.NoSlow;
+end)
+end)
+Tabs.Players:Toggle("Noclip","Noclip.",false,function(v)
+_G.Noclip = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.Noclip and not _G.SeekSpeed then
+game.Players.LocalPlayer.Character.Collision.CanCollide = not _G.Noclip
+game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = not _G.Noclip
+end
+end)
+end)
+Tabs.Players:Toggle("Cham Body","Cham Body.",false,function(v)
+_G.BlurBody = v
+if _G.BlurBody then
+game.Players.LocalPlayer.Character.Head.Material = "ForceField"
+game.Players.LocalPlayer.Character.UpperTorso.Material = "ForceField"
+game.Players.LocalPlayer.Character.RightHand.Material = "ForceField"
+game.Players.LocalPlayer.Character.RightLowerArm.Material = "ForceField"
+game.Players.LocalPlayer.Character.RightLowerLeg.Material = "ForceField"
+game.Players.LocalPlayer.Character.RightUpperArm.Material = "ForceField"
+game.Players.LocalPlayer.Character.RightUpperLeg.Material = "ForceField"
+game.Players.LocalPlayer.Character.LeftLowerLeg.Material = "ForceField"
+game.Players.LocalPlayer.Character.LeftUpperArm.Material = "ForceField"
+game.Players.LocalPlayer.Character.LeftUpperLeg.Material = "ForceField"
+game.Players.LocalPlayer.Character.LowerTorso.Material = "ForceField"
+game.Players.LocalPlayer.Character.RightFoot.Material = "ForceField"
+game.Players.LocalPlayer.Character.LeftFoot.Material = "ForceField"
+game.Players.LocalPlayer.Character.LeftHand.Material = "ForceField"
+game.Players.LocalPlayer.Character.LeftLowerArm.Material = "ForceField"
+BlurBody = workspace.ChildAdded:Connect(function()
+game.Players.LocalPlayer.Character.Head.Material = "ForceField"
+game.Players.LocalPlayer.Character.UpperTorso.Material = "ForceField"
+game.Players.LocalPlayer.Character.RightHand.Material = "ForceField"
+game.Players.LocalPlayer.Character.RightLowerArm.Material = "ForceField"
+game.Players.LocalPlayer.Character.RightLowerLeg.Material = "ForceField"
+game.Players.LocalPlayer.Character.RightUpperArm.Material = "ForceField"
+game.Players.LocalPlayer.Character.RightUpperLeg.Material = "ForceField"
+game.Players.LocalPlayer.Character.LeftLowerLeg.Material = "ForceField"
+game.Players.LocalPlayer.Character.LeftUpperArm.Material = "ForceField"
+game.Players.LocalPlayer.Character.LeftUpperLeg.Material = "ForceField"
+game.Players.LocalPlayer.Character.LowerTorso.Material = "ForceField"
+game.Players.LocalPlayer.Character.RightFoot.Material = "ForceField"
+game.Players.LocalPlayer.Character.LeftFoot.Material = "ForceField"
+game.Players.LocalPlayer.Character.LeftHand.Material = "ForceField"
+game.Players.LocalPlayer.Character.LeftLowerArm.Material = "ForceField"
+end)
+else
+BlurBody:Disconnect()
+game.Players.LocalPlayer.Character.Head.Material = "Plastic"
+game.Players.LocalPlayer.Character.UpperTorso.Material = "Plastic"
+game.Players.LocalPlayer.Character.RightHand.Material = "Plastic"
+game.Players.LocalPlayer.Character.RightLowerArm.Material = "Plastic"
+game.Players.LocalPlayer.Character.RightLowerLeg.Material = "Plastic"
+game.Players.LocalPlayer.Character.RightUpperArm.Material = "Plastic"
+game.Players.LocalPlayer.Character.RightUpperLeg.Material = "Plastic"
+game.Players.LocalPlayer.Character.LeftLowerLeg.Material = "Plastic"
+game.Players.LocalPlayer.Character.LeftUpperArm.Material = "Plastic"
+game.Players.LocalPlayer.Character.LeftUpperLeg.Material = "Plastic"
+game.Players.LocalPlayer.Character.LowerTorso.Material = "Plastic"
+game.Players.LocalPlayer.Character.RightFoot.Material = "Plastic"
+game.Players.LocalPlayer.Character.LeftFoot.Material = "Plastic"
+game.Players.LocalPlayer.Character.LeftHand.Material = "Plastic"
+game.Players.LocalPlayer.Character.LeftLowerArm.Material = "Plastic"
+end
+end)
+Tabs.Players:Line()
+Tabs.Players:Dropdown("Fly Speed", {"15","20","25","30","35","40","45","50"}, function(v)
+_G.SetSpeedFly = v
+end)
+Tabs.Players:Toggle("Fly","Can Fly.",false,function(v)
+_G.StartFly = v
+if _G.StartFly == false then
+if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler:Destroy()
+game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler:Destroy()
+game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
+end
+end
+while _G.StartFly do
+if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.MaxForce = Vector3.new(9e9,9e9,9e9)
+game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.MaxTorque = Vector3.new(9e9,9e9,9e9)
+game.Players.LocalPlayer.Character.Humanoid.PlatformStand = true
+game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.CFrame = Workspace.CurrentCamera.CoordinateFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = Vector3.new()
+if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X > 0 then
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + game.Workspace.CurrentCamera.CFrame.RightVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X * _G.SetSpeedFly)
+end
+if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X < 0 then
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + game.Workspace.CurrentCamera.CFrame.RightVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X * _G.SetSpeedFly)
+end
+if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z > 0 then
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - game.Workspace.CurrentCamera.CFrame.LookVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z * _G.SetSpeedFly)
+end
+if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z < 0 then
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - game.Workspace.CurrentCamera.CFrame.LookVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z * _G.SetSpeedFly)
+end
+elseif game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") == nil and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") == nil then
+local bv = Instance.new("BodyVelocity")
+local bg = Instance.new("BodyGyro")
+
+bv.Name = "VelocityHandler"
+bv.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
+bv.MaxForce = Vector3.new(0,0,0)
+bv.Velocity = Vector3.new(0,0,0)
+
+bg.Name = "GyroHandler"
+bg.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
+bg.MaxTorque = Vector3.new(0,0,0)
+bg.P = 1000
+bg.D = 50
+end
+task.wait()
+end
+end)
+if not Fools then
+Tabs.Players:Toggle("Can Jump","Get jump.",false,function(v)
+_G.Jump = v
+game:GetService("RunService").RenderStepped:Connect(function()
+game.Players.LocalPlayer.Character:SetAttribute("CanJump", _G.Jump)
+end)
+end)
+Tabs.Players:Toggle("Auto Jump","Auto Jump.",false,function(v)
+_G.AutoJump = v
+while _G.AutoJump do wait(_G.CooldownJump)
+if _G.AutoJump then
+game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end
+end)
+end)
+Tabs.Players:Dropdown("Cooldown Jump", {"0","0.5","1","1.5","2","2.5","3"}, function(v)
+_G.CooldownJump = v
+end)
+Tabs.Players:Line()
+local ClonedCollision = game:GetService("Players").LocalPlayer.Character.Collision:Clone()
+ClonedCollision.Name = "_CollisionClone"
+ClonedCollision.Massless = true
+ClonedCollision.Parent = game:GetService("Players").LocalPlayer.Character
+ClonedCollision.CanCollide = false
+ClonedCollision.CanQuery = false
+ClonedCollision.CustomPhysicalProperties = PhysicalProperties.new(0.01, 0.7, 0, 1, 1)
+if ClonedCollision:FindFirstChild("CollisionCrouch") then
+ClonedCollision.CollisionCrouch:Destroy()
+end
+task.spawn(function()
+while task.wait(0.23) do
+if _G.SpeedBypass then
+if ClonedCollision then
+ClonedCollision.Massless = false
+task.wait(0.23)
+if game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored then
+ClonedCollision.Massless = true
+task.wait(1)
+end
+ClonedCollision.Massless = true
+end
+end
+end
+end)
+Tabs.Players:Toggle("Speed Bypass","Bypass high speed.",false,function(v)
+_G.SpeedBypass = v
+end)
+Tabs.Players:Toggle("Manipulate Bypass","Manipulate position.",false,function(v)
+_G.ManipulateBypass = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.ManipulateBypass then
+game.Players.LocalPlayer.Character:PivotTo(game.Players.LocalPlayer.Character:GetPivot() + workspace.CurrentCamera.CFrame.LookVector * Vector3.new(1, 0, 1) * -100)
+end
+end)
+end)
+end
+if Mines then
+Tabs.Players:Toggle("Ladder Bypass","Press ladder to bypass anti cheat.",false,function(v)
+_G.LadderBypass = v
+task.spawn(function()
+while _G.LadderBypass do wait(1)
+if _G.LadderBypass and not workspace:FindFirstChild("Ladder_Bypass") then
+local progressPart = Instance.new("Part", workspace) do
+progressPart.Anchored = true
+progressPart.CanCollide = false
+progressPart.Name = "Ladder_Bypass"
+progressPart.Transparency = 1
+end
+if _G.LadderBypass and game.Players.LocalPlayer.Character:GetAttribute("Climbing") then
+task.wait()
+game.Players.LocalPlayer.Character:SetAttribute("Climbing", false)
+end
+else
+if workspace:FindFirstChild("Ladder_Bypass") then 
+workspace:FindFirstChild("Ladder_Bypass"):Destroy() 
+end
+end
+end
+end)
+end)
+end
+Tabs.Players:Toggle("Crouch Bypass","Crouch spoof.",false,function(v)
+_G.CrouchSpoof = v
+game:GetService("RunService").RenderStepped:Connect(function()
+RemotesFolder.Crouch:FireServer(_G.CrouchSpoof)
+end)
+end)
+
 
 Tabs.Visual:Toggle("Glitch Fragments ESP","Highlights glitch fragments.",false,function(Bool)
     _G.GlitchFragmentsESP = Bool
