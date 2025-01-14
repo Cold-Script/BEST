@@ -1,3 +1,12 @@
+local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
+local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/Cold-Script/NFT/refs/heads/main/NOTIFICATION"))()
+function Notify(entity,time)
+Notification:Notify(
+    {Title = "YOUHUB | Notification, Description = "Entity '" .. entity .. "' has spawn"},
+    {OutlineColor = Color3.fromRGB(0, 200, 255),Time = time or 5, Type = "image"},
+    {Image = "http://www.roblox.com/asset/?id=6023426923", ImageColor = Color3.fromRGB(0, 200, 255)}
+)
+end
 local Flux = loadstring(game:HttpGet"https://github.com/Cold-Script/Flux/blob/main/Flux Lib Source?raw=true")()
 local Window = Flux:Window("YOUHUB", "DOORS | CONTENT UPD", Color3.fromRGB(0, 200, 255), Enum.KeyCode.LeftControl)
 local Tabs = {
@@ -23,9 +32,9 @@ else
 local RemotesFolder = ReplicatedStorage.RemotesFolder
 end
 --ESP
-local ESP_Chest = {ChestBox={"Chest",3},ChestBoxLocked={"Chest [Locked]",3},Toolbox={"Box",3},Chest_Vine={"Chest",7}}
-local ESP_Items = {StarJug={"StarJug",1.5},StarBottle={"StarBottle",1.5},StarVial={"StarVial",1.5},GweenSoda={"Gween Soda",1.5},Bread={"Bread",1.5},Cheese={"Cheese",1.5},BandagePack={"BandagePack",1.5},BatteryPack={"Battery Pack",1.5},LaserPointer={"LaserPointer",1.5},Glowstick={"Glowstick",1.5},Smoothie={"Smoothie",1.5},Straplight={"Straplight",1.5},Bulklight={"Bulklight",1.5},KeyObtain={"Key",1.5},LiveHintBook={"Book",1.5},Lighter={"Lighter",1.5},Lockpick={"Lockpicks",1.5},Vitamins={"Vitamins",1.5},Crucifix={"Crucifix",1.5},CrucifixWall={"Crucifix",1.5},SkeletonKey={"Skeleton Key",1.5},Flashlight={"Flashlight",1.5},Candle={"Candle",1.5},FuseObtain={"Fuse",1.5},LiveBreakerPolePickup={"Fuse",1.5},Shears={"Shears",1.5},Battery={"Battery",1.5},PickupItem={"Paper",1.5},ElectricalKeyObtain={"Electrical Key",1.5},Shakelight={"Shakelight",1.5},Scanner={"iPad",1.5}}
-local ESP_Entities = {SeekMovingNewClone={"Seek",7},Grumbo={"Grumble",7},GiggleCeiling={"Giggle",7},Sally={"Sally",7},BackdoorLookman={"Lookman",7},BackdoorRush={"Blitz",7},RushMoving={"Rush",5},AmbushMoving={"Ambush",5},FigureRig={"Figure",7},FigureRagdoll={"Figure",7},FigureLibrary={"Figure",7},SeekMoving={"Seek",5.5},Screech={"Screech",2},Eyes={"Eyes",4},Snare={"Snare",2},A60={"A-60",10},A120={"A-120",10}}
+local ESP_Chest = {ChestBox={"Chest",3},ChestBoxLocked={"Chest [Locked]",3},Toolbox_Locked={"Box [Locked]"},Toolbox={"Box",3},Chest_Vine={"Chest",7}}
+local ESP_Items = {StarJug={"StarJug",1.5},StarBottle={"StarBottle",1.5},StarVial={"StarVial",1.5},GweenSoda={"Gween Soda",1.5},Bread={"Bread",1.5},Cheese={"Cheese",1.5},BandagePack={"BandagePack",1.5},BatteryPack={"Battery Pack",1.5},LaserPointer={"LaserPointer",1.5},Glowsticks={"Glowstick",1.5},Smoothie={"Smoothie",1.5},Straplight={"Straplight",1.5},Bulklight={"Bulklight",1.5},KeyObtain={"Key",1.5},LiveHintBook={"Book",1.5},Lighter={"Lighter",1.5},Lockpick={"Lockpicks",1.5},Vitamins={"Vitamins",1.5},Crucifix={"Crucifix",1.5},CrucifixWall={"Crucifix",1.5},SkeletonKey={"Skeleton Key",1.5},Flashlight={"Flashlight",1.5},Candle={"Candle",1.5},FuseObtain={"Fuse",1.5},LiveBreakerPolePickup={"Fuse",1.5},Shears={"Shears",1.5},Battery={"Battery",1.5},PickupItem={"Paper",1.5},ElectricalKeyObtain={"Electrical Key",1.5},Shakelight={"Shakelight",1.5},Scanner={"iPad",1.5}}
+local ESP_Entities = {SeekMovingNewClone={"Seek",7},GlitchAmbush={"Glitch-Ambush"},GlitchRush={"Glitch-Rush"},GlitchScreech={"Glitch-Screech"},Grumbo={"Grumble",7},GiggleCeiling={"Giggle",7},SallyMoving={"Sally",7},BackdoorLookman={"Lookman",7},BackdoorRush={"Blitz",7},Wall={"Seek-Wall"},RetroScreech={"Screech"},RushMoving={"Rush",5},AmbushMoving={"Ambush",5},FigureRig={"Figure",7},FigureRagdoll={"Figure",7},FigureLibrary={"Figure",7},SeekMoving={"Seek",5.5},Screech={"Screech",2},Eyes={"Eyes",4},Snare={"Snare",2},A60={"A-60",10},A120={"A-120",10}}
 local ESP_Other = {Rooms_Locker={"Locker",3},Rooms_Frigde_Locker={"Locker",3},TimerLever={"Timer Lever",7},WaterPump={"WaterPump",7},MinesAnchor={"Anchor",7},MinesGateButton={"Gate Button",7},MinesGenerator={"Generator",7},Door={"Door",5},LeverForGate={"Lever",3},GoldPile={"Gold",0.5},Bandage={"Bandage",0.5}}
 for _,Player in pairs(game:GetService("Players"):GetPlayers()) do
 if Player ~= game:GetService("Players").LocalPlayer then
@@ -159,11 +168,12 @@ end
 RemoteInteract:Disconnect()
 end
 end)
-Tabs.Main:Dropdown("Max Reach", {"15","20","25","30"}, function(v)
+Tabs.Main:Dropdown("Max Reach", {"10","15","20","25","30"}, function(v)
 _G.MaxReach = v
 end)
 Tabs.Main:Line()
-Tabs.Main:Button("Auto Breaker","Auto Minigame Breaker",function()
+Tabs.Main:Button("Prize Breaker","Prize Minigame Breaker",function()
+Flux:Notification("Already, prize breaker minigame")
 RemotesFolder.EBF:FireServer()
 end)
 Tabs.Main:Button("Auto Padlock Unlock","Auto Library Code",function()
@@ -284,10 +294,156 @@ end
 end
 end)
 end
-
-
-
-
+Tabs.Main:Line()
+_G.AlertVolume = 5
+Tabs.Main:Toggle("Entity Notification","Warning entity spawn.",false,function(v)
+if v then
+local Entity = {"SeekMovingNewClone","SeekMoving","GlitchAmbush","GlitchRush","BackdoorLookman","BackdoorRush","GloombatSwarm","Eyes","JeffTheKiller","RushMoving","AmbushMoving","Snare","A60","A120"}
+NotificationEntity = workspace.ChildAdded:Connect(function(v)
+if table.find(Entity,v.Name) then
+repeat task.wait() until game.Players.LocalPlayer:DistanceFromCharacter(v:GetPivot().Position) < 750 or not v:IsDescendantOf(workspace)
+if v:IsDescendantOf(workspace) then
+if v.Name == "RushMoving" then
+Notify("Rush")
+if _G.SoundAlert then
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = _G.AlertVolume
+Sound.PlayOnRemove = true
+Sound:Destroy()
+end
+elseif v.Name == "AmbushMoving" then
+Notify("Ambush")
+if _G.SoundAlert then
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = _G.AlertVolume
+Sound.PlayOnRemove = true
+Sound:Destroy()
+end
+elseif v.Name == "A60" then
+Notify("A60")
+if _G.SoundAlert then
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = _G.AlertVolume
+Sound.PlayOnRemove = true
+Sound:Destroy()
+end
+elseif v.Name == "A120" then
+Notify("A120")
+if _G.SoundAlert then
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = _G.AlertVolume
+Sound.PlayOnRemove = true
+Sound:Destroy()
+end
+elseif v.Name == "JeffTheKiller" then
+Notify("JeffTheKiller")
+if _G.SoundAlert then
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = _G.AlertVolume
+Sound.PlayOnRemove = true
+Sound:Destroy()
+end
+elseif v.Name == "Eyes" then
+Notify("Eyes")
+if _G.SoundAlert then
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = _G.AlertVolume
+Sound.PlayOnRemove = true
+Sound:Destroy()
+end
+elseif v.Name == "GloombatSwarm" then
+Notify("Gloombat Swarm")
+if _G.SoundAlert then
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = _G.AlertVolume
+Sound.PlayOnRemove = true
+Sound:Destroy()
+end
+elseif v.Name == "BackdoorRush" then
+Notify("Blitz")
+if _G.SoundAlert then
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = _G.AlertVolume
+Sound.PlayOnRemove = true
+Sound:Destroy()
+end
+elseif v.Name == "BackdoorLookman" then
+Notify("Lookman")
+if _G.SoundAlert then
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = _G.AlertVolume
+Sound.PlayOnRemove = true
+Sound:Destroy()
+end
+elseif v.Name == "GlitchRush" then
+Notify("Glitch-Rush")
+if _G.SoundAlert then
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = _G.AlertVolume
+Sound.PlayOnRemove = true
+Sound:Destroy()
+end
+elseif v.Name == "GlitchAmbush" then
+Notify("Glitch-Ambush")
+if _G.SoundAlert then
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = _G.AlertVolume
+Sound.PlayOnRemove = true
+Sound:Destroy()
+end
+elseif v.Name == "SeekMoving" then
+Notify("Seek")
+if _G.SoundAlert then
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = _G.AlertVolume
+Sound.PlayOnRemove = true
+Sound:Destroy()
+end
+elseif v.Name == "SeekMovingNewClone" then
+Notify("Seek")
+if _G.SoundAlert then
+local Sound = Instance.new("Sound")
+Sound.Parent = game.SoundService
+Sound.SoundId = "rbxassetid://4590657391"
+Sound.Volume = _G.AlertVolume
+Sound.PlayOnRemove = true
+Sound:Destroy()
+end
+end
+end
+end
+end)
+else
+NotificationEntity:Disconnect()
+end
+end)
+Tabs.Main:Toggle("Play Sound","Enabled sound when notification.",false,function(v)
+_G.SoundAlert = v
+end)
 
 Tabs.Visual:Toggle("Chest ESP","Highlights all chest.",false,function(Bool)
     _G.ChestESP = Bool
