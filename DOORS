@@ -2,7 +2,7 @@ local NotificationHolder = loadstring(game:HttpGet("https://raw.githubuserconten
 local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/Cold-Script/NFT/refs/heads/main/NOTIFICATION"))()
 function Notify(entity,time)
 Notification:Notify(
-    {Title = "YOUHUB | Notification, Description = "Entity '" .. entity .. "' has spawn"},
+    {Title = "YOUHUB | Notification", Description = "Entity '" .. entity .. "' has spawn"},
     {OutlineColor = Color3.fromRGB(0, 200, 255),Time = time or 5, Type = "image"},
     {Image = "http://www.roblox.com/asset/?id=6023426923", ImageColor = Color3.fromRGB(0, 200, 255)}
 )
@@ -11,9 +11,8 @@ local Flux = loadstring(game:HttpGet"https://github.com/Cold-Script/Flux/blob/ma
 local Window = Flux:Window("YOUHUB", "DOORS | CONTENT UPD", Color3.fromRGB(0, 200, 255), Enum.KeyCode.LeftControl)
 local Tabs = {
 Main = Window:Tab("| Main", "http://www.roblox.com/asset/?id=6023426915"),
-Entities = Window:Tab("| Entities","http://www.roblox.com/asset/?id=6023426915"),
 Misc = Window:Tab("| Misc","http://www.roblox.com/asset/?id=6023426915"),
-VFX = Window:Tab("| VFX","http://www.roblox.com/asset/?id=6023426915"),
+Entities = Window:Tab("| Entities","http://www.roblox.com/asset/?id=6023426915"),
 Players = Window:Tab("| Players", "http://www.roblox.com/asset/?id=6023426915"),
 Visual = Window:Tab("| Visual", "http://www.roblox.com/asset/?id=6023426915"),
 Floor = Window:Tab("| Floor", "http://www.roblox.com/asset/?id=6023426915")
@@ -25,7 +24,7 @@ local Fools = Floor.Value == "Fools"
 local Hotel = Floor.Value == "Hotel"
 local Mines = Floor.Value == "Mines"
 local Retro = Floor.Value == "Retro"
-local Backdoors = Floor.Value == "Backdoors"
+local Backdoors = Floor.Value == "Backdoor"
 if Fools then
 local RemotesFolder = ReplicatedStorage.EntityInfo
 else
@@ -443,6 +442,21 @@ end
 end)
 Tabs.Main:Toggle("Play Sound","Enabled sound when notification.",false,function(v)
 _G.SoundAlert = v
+end)
+
+Tabs.Misc:Button("Reset character","You will die.",function()
+game.Players.LocalPlayer.Character.Humanoid.Health = 0
+end)
+Tabs.Misc:Button("Return to lobby","Return to lobby.",function()
+RemotesFolder.Lobby:FireServer()
+end)
+Tabs.Misc:Button("Play Again","Replay game.",function()
+RemotesFolder.PlayAgain:FireServer()
+end)
+Tabs.Misc:Button("Revive","Revive you on death.",function()
+if game.Players.LocalPlayer.Character.Humanoid.Health == 0 then
+RemotesFolder.Revive:FireServer()
+end
 end)
 
 Tabs.Visual:Toggle("Chest ESP","Highlights all chest.",false,function(Bool)
