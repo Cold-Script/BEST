@@ -22,16 +22,16 @@ local GameData = ReplicatedStorage:WaitForChild("GameData")
 local Floor = GameData:WaitForChild("Floor")
 local Fools = Floor.Value == "Fools"
 local Hotel = Floor.Value == "Hotel"
+local Rooms = Floor.Value == "Rooms"
 local Mines = Floor.Value == "Mines"
 local Retro = Floor.Value == "Retro"
 local Backdoors = Floor.Value == "Backdoor"
-if Fools then
-local RemotesFolder = ReplicatedStorage.EntityInfo
+if Fools and ReplicatedStorage.EntityInfo.Name == "EntityInfo" then
+ReplicatedStorage.EntityInfo.Name = "RemotesFolder"
 end
-if not Fools then
 local RemotesFolder = ReplicatedStorage.RemotesFolder
-end
 --ESP
+local ESP_GlitchFragments = {GlitchCube={"GlitchCube",5}}
 local ESP_Chest = {ChestBox={"Chest",3},ChestBoxLocked={"Chest [Locked]",3},Toolbox_Locked={"Box [Locked]",3},Toolbox={"Box",3},Chest_Vine={"Chest",7}}
 local ESP_Items = {StarJug={"StarJug",1.5},StarBottle={"StarBottle",1.5},StarVial={"StarVial",1.5},GweenSoda={"Gween Soda",1.5},Bread={"Bread",1.5},Cheese={"Cheese",1.5},BandagePack={"BandagePack",1.5},BatteryPack={"Battery Pack",1.5},LaserPointer={"LaserPointer",1.5},Glowsticks={"Glowstick",1.5},Smoothie={"Smoothie",1.5},Straplight={"Straplight",1.5},Bulklight={"Bulklight",1.5},KeyObtain={"Key",1.5},LiveHintBook={"Book",1.5},Lighter={"Lighter",1.5},Lockpick={"Lockpicks",1.5},Vitamins={"Vitamins",1.5},Crucifix={"Crucifix",1.5},CrucifixWall={"Crucifix",1.5},SkeletonKey={"Skeleton Key",1.5},Flashlight={"Flashlight",1.5},Candle={"Candle",1.5},FuseObtain={"Fuse",1.5},LiveBreakerPolePickup={"Fuse",1.5},Shears={"Shears",1.5},Battery={"Battery",1.5},PickupItem={"Paper",1.5},ElectricalKeyObtain={"Electrical Key",1.5},Shakelight={"Shakelight",1.5},Scanner={"iPad",1.5}}
 local ESP_Entities = {SeekMovingNewClone={"Seek",7},GlitchAmbush={"Glitch-Ambush",5},GlitchRush={"Glitch-Rush",5},GlitchScreech={"Glitch-Screech",3},Grumbo={"Grumble",7},GiggleCeiling={"Giggle",7},SallyMoving={"Sally",7},BackdoorLookman={"Lookman",7},BackdoorRush={"Blitz",7},Wall={"Seek-Wall",3},RetroScreech={"Screech",3},JeffTheKiller={"JeffTheKiller",7},RushMoving={"Rush",5},AmbushMoving={"Ambush",5},FigureRig={"Figure",7},FigureRagdoll={"Figure",7},FigureLibrary={"Figure",7},SeekMoving={"Seek",5.5},Screech={"Screech",2},Eyes={"Eyes",4},Snare={"Snare",2},A60={"A-60",10},A120={"A-120",10}}
@@ -43,12 +43,12 @@ end
 end
 local function ApplySettings(Object)
 task.spawn(function()
-if (ESP_Chest[Object.Name] or ESP_Items[Object.Name] or ESP_Entities[Object.Name] or ESP_Other[Object.Name]) and Object.ClassName == "Model" then
+if (ESP_GlitchFragments[Object.Name] or ESP_Chest[Object.Name] or ESP_Items[Object.Name] or ESP_Entities[Object.Name] or ESP_Other[Object.Name]) and Object.ClassName == "Model" then
 if Object:FindFirstChild("RushNew") then
 if not Object.RushNew:WaitForChild("PlaySound").Playing then return end
 end
-local Color = ESP_Chest[Object.Name] and Color3.fromRGB(255, 0, 255) or ESP_Items[Object.Name] and Color3.new(1,1) or ESP_Entities[Object.Name] and Color3.new(1) or ESP_Other[Object.Name] and Color3.new(0,1,1)
-if Object.Name == "RushMoving" or Object.Name == "AmbushMoving" or Object.Name == "Eyes" or Object.Name == "A60" or Object.Name == "A120" or Object.Name == "BackdoorRush" or Object.Name == "BackdoorLookman" then
+local Color = ESP_GlitchFragments[Object.Name] and Color3.fromRGB(130,0,255) or ESP_Chest[Object.Name] and Color3.fromRGB(255, 0, 255) or ESP_Items[Object.Name] and Color3.new(1,1) or ESP_Entities[Object.Name] and Color3.new(1) or ESP_Other[Object.Name] and Color3.new(0,1,1)
+if Object.Name == "RushMoving" or Object.Name == "AmbushMoving" or Object.Name == "Eyes" or Object.Name == "A60" or Object.Name == "A120" or Object.Name == "GlitchAmbush" or Object.Name == "GlitchRush" or Object.Name == "BackdoorRush" or Object.Name == "BackdoorLookman" then
 for i = 1, 100 do
 if Object:FindFirstChildOfClass("Part") then
 break
@@ -94,6 +94,7 @@ local function ApplyHighlight(IsValid,Bool)
                     end
                 end
             end
+            ApplyHighlight(ESP_GlitchFragments[Object.Name],_G.GlitchFragmentsESP)
             ApplyHighlight(ESP_Chest[Object.Name],_G.ChestESP)
             ApplyHighlight(ESP_Items[Object.Name],_G.ItemESP)
             ApplyHighlight(ESP_Entities[Object.Name],_G.EntityESP)
@@ -682,6 +683,14 @@ end
 end)
 end
 
+Tabs.Visual:Toggle("Glitch Fragments ESP","Highlights glitch fragments.",false,function(Bool)
+    _G.GlitchFragmentsESP = Bool
+    for _,Object in pairs(workspace:GetDescendants()) do
+        if ESP_GlitchFragments[Object.Name] then
+            ApplySettings(Object)
+        end
+    end
+end)
 
 Tabs.Visual:Toggle("Chest ESP","Highlights all chest.",false,function(Bool)
     _G.ChestESP = Bool
