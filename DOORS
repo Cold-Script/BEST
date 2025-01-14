@@ -614,6 +614,73 @@ RemotesFolder.Dread:FireServer(true)
 end
 end)
 end)
+if Retro then
+Tabs.Entities:Toggle("Anti-Lava","Lava no damge.",false,function(v)
+if v then
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "Lava" then
+v.CanTouch = false
+end
+end
+AntiLava = workspace.CurrentRooms.ChildAdded:Connect(function()
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "Lava" then
+v.CanTouch = false
+end
+end
+end)
+else
+AntiLava:Disconnect()
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "Lava" then
+v.CanTouch = true
+end
+end
+end
+end)
+Tabs.Entities:Toggle("Anti-Seek Wall","Seek wall no damge.",false,function(v)
+if v then
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "TheWall" then
+v.CanTouch = false
+end
+end
+AntiWall = workspace.CurrentRooms.ChildAdded:Connect(function(v)
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "TheWall" then
+v.CanTouch = false
+end
+end
+end)
+else
+AntiWall:Disconnect()
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "TheWall" then
+v.CanTouch = true
+end
+end
+end
+end)
+Tabs.Entities:Toggle("Anti-Drakobloxxer","No Drakobloxxer.",false,function(v)
+if v then
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "Drakobloxxer" then
+v:Destroy()
+end
+end
+AntiDrakobloxxer = workspace.ChildAdded:Connect(function()
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "Drakobloxxer" then
+v:Destroy()
+end
+end
+end)
+else
+AntiDrakobloxxer:Disconnect()
+end
+end)
+end
+
 
 Tabs.Visual:Toggle("Chest ESP","Highlights all chest.",false,function(Bool)
     _G.ChestESP = Bool
