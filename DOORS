@@ -27,7 +27,8 @@ local Retro = Floor.Value == "Retro"
 local Backdoors = Floor.Value == "Backdoor"
 if Fools then
 local RemotesFolder = ReplicatedStorage.EntityInfo
-else
+end
+if not Fools then
 local RemotesFolder = ReplicatedStorage.RemotesFolder
 end
 --ESP
@@ -172,7 +173,7 @@ _G.MaxReach = v
 end)
 Tabs.Main:Line()
 Tabs.Main:Button("Prize Breaker","Prize Minigame Breaker",function()
-Flux:Notification("Already, prize breaker minigame")
+Flux:Notification("Already, prize breaker minigame","OK")
 RemotesFolder.EBF:FireServer()
 end)
 Tabs.Main:Button("Auto Padlock Unlock","Auto Library Code",function()
