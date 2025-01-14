@@ -749,7 +749,7 @@ end)
 Tabs.Players:Toggle("Noclip","Noclip.",false,function(v)
 _G.Noclip = v
 game:GetService("RunService").RenderStepped:Connect(function()
-if _G.Noclip and not _G.SeekSpeed then
+if _G.Noclip then
 game.Players.LocalPlayer.Character.Collision.CanCollide = not _G.Noclip
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = not _G.Noclip
 end
@@ -872,7 +872,7 @@ while _G.AutoJump do wait(_G.CooldownJump)
 if _G.AutoJump then
 game.Players.LocalPlayer.Character.Humanoid.Jump = true
 end
-end)
+end
 end)
 Tabs.Players:Dropdown("Cooldown Jump", {"0","0.5","1","1.5","2","2.5","3"}, function(v)
 _G.CooldownJump = v
